@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tử Vi Mỗi Ngày</title>
+<meta name="description" content="Tử vi 12 con giáp hôm nay, xem tuổi hợp, đổi lịch âm, xem bản mệnh – miễn phí.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#140f24; --bg2:#1e1636; --card:#241b40; --line:#3a2f5c;
+  --gold:#e8c26a; --gold2:#f6dea0; --text:#efe9ff; --muted:#a99cc9;
+  --good:#6fd39a; --bad:#ff8a8a; --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Be Vietnam Pro",system-ui,sans-serif;line-height:1.55}
+body{background:radial-gradient(1200px 600px at 50% -200px,#3b2a6b 0%,transparent 70%),var(--bg);min-height:100vh}
+a{color:var(--gold)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{text-align:center;padding:28px 0 12px}
+header h1{font-family:"Noto Serif",serif;font-size:30px;margin:0;color:var(--gold2);letter-spacing:.5px}
+header p{margin:6px 0 0;color:var(--muted);font-size:14px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 0;position:sticky;top:0;background:linear-gradient(var(--bg) 70%,transparent);z-index:5;scrollbar-width:none}
+nav a{flex:0 0 auto;text-decoration:none;color:var(--muted);padding:9px 14px;border-radius:999px;border:1px solid var(--line);font-size:14px;font-weight:500}
+nav a.on{background:var(--gold);color:#241b40;border-color:var(--gold)}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:14px 0}
+.card h2{font-family:"Noto Serif",serif;font-size:20px;margin:0 0 10px;color:var(--gold2)}
+.card h3{font-size:16px;margin:14px 0 6px}
+.muted{color:var(--muted);font-size:14px}
+.today-head{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.today-head div{background:var(--bg2);border-radius:12px;padding:12px}
+.today-head b{display:block;font-size:20px;color:var(--gold2)}
+.today-head span{font-size:13px;color:var(--muted)}
+.hours{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.hours span{background:var(--bg2);border:1px solid var(--line);padding:4px 10px;border-radius:999px;font-size:13px}
+.zodiac{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.zodiac button{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 4px;font:inherit;cursor:pointer}
+.zodiac button .e{font-size:26px;display:block}
+.zodiac button.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.zodiac button small{color:var(--muted);font-size:12px}
+.stars{color:var(--gold);letter-spacing:2px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.row p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.lucky{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.lucky div{background:var(--bg2);border-radius:12px;padding:10px;text-align:center}
+.lucky b{display:block;color:var(--gold2)}
+.lucky span{font-size:12px;color:var(--muted)}
+label{display:block;font-size:14px;color:var(--muted);margin:10px 0 4px}
+input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--text);font:inherit}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--gold);color:#241b40;border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:700;cursor:pointer;margin-top:14px;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.btn.block{width:100%}
+.score{font-size:54px;font-weight:700;color:var(--gold2);text-align:center;line-height:1;margin:6px 0}
+.verdict{text-align:center;font-weight:600}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.tag.g{background:#1f4d36;color:var(--good)}.tag.b{background:#5a2330;color:var(--bad)}.tag.n{background:#3a2f5c;color:var(--muted)}
+.ad-slot{border:1px dashed var(--line);border-radius:12px;min-height:90px;display:flex;align-items:center;justify-content:center;color:#6c5f91;font-size:12px;margin:14px 0;overflow:hidden}
+.aff{display:flex;gap:12px;align-items:center}
+.aff .ico{font-size:34px}
+.modal{position:fixed;inset:0;background:rgba(8,5,18,.85);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.modal.on{display:flex}
+.modal .box{background:var(--card);border-radius:var(--radius);padding:16px;max-width:420px;width:100%;max-height:92vh;overflow:auto;text-align:center}
+.modal img{width:100%;border-radius:12px}
+.studio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.studio-grid img{width:100%;border-radius:8px;cursor:pointer}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+.hidden{display:none}
+@media (max-width:420px){.zodiac{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="siteName">Tử Vi Mỗi Ngày</h1>
+    <p id="tagline">Xem nhanh vận khí 12 con giáp – cập nhật mỗi ngày</p>
+  </header>
+
+  <nav id="nav">
+    <a href="#hom-nay" data-v="hom-nay">🔮 Hôm nay</a>
+    <a href="#hop-tuoi" data-v="hop-tuoi">💞 Xem tuổi hợp</a>
+    <a href="#ban-menh" data-v="ban-menh">🧭 Bản mệnh</a>
+    <a href="#lich-am" data-v="lich-am">🌙 Lịch âm</a>
+  </nav>
+
+  <!-- ===== HÔM NAY ===== -->
+  <section class="view" id="v-hom-nay">
+    <div class="card">
+      <h2>Hôm nay</h2>
+      <div class="today-head">
+        <div><span>Dương lịch</span><b id="tSolar"></b><span id="tWeekday"></span></div>
+        <div><span>Âm lịch</span><b id="tLunar"></b><span id="tLunarYear"></span></div>
+      </div>
+      <p class="muted" id="tCanChi" style="margin:10px 0 0"></p>
+      <h3>Giờ hoàng đạo (giờ tốt)</h3>
+      <div class="hours" id="tHours"></div>
+    </div>
+
+    <div class="card">
+      <h2>Chọn con giáp của bạn</h2>
+      <div class="zodiac" id="zodiac"></div>
+      <p class="muted" style="margin-bottom:0">Chưa biết mình tuổi gì? Vào <a href="#ban-menh">Bản mệnh</a> nhập ngày sinh.</p>
+    </div>
+
+    <div class="card" id="horo"></div>
+    <div class="ad-slot" data-ad="1">Quảng cáo</div>
+    <div class="card hidden" id="affCard"></div>
+  </section>
+
+  <!-- ===== HỢP TUỔI ===== -->
+  <section class="view" id="v-hop-tuoi">
+    <div class="card">
+      <h2>Xem tuổi hợp nhau</h2>
+      <p class="muted">Nhập ngày sinh <b>dương lịch</b> của hai người. App tự đổi sang năm âm lịch (người sinh tháng 1–2 dương lịch có thể thuộc năm âm lịch trước).</p>
+      <div class="grid2">
+        <div><label>Người thứ nhất</label><input type="date" id="pA" value="1994-06-15"></div>
+        <div><label>Người thứ hai</label><input type="date" id="pB" value="1996-09-20"></div>
+      </div>
+      <label>Xem cho</label>
+      <select id="pType"><option value="love">Tình duyên / vợ chồng</option><option value="work">Làm ăn / đối tác</option><option value="friend">Bạn bè</option></select>
+      <button class="btn block" id="btnMatch">Xem kết quả</button>
+    </div>
+    <div class="card hidden" id="matchOut"></div>
+    <div class="ad-slot" data-ad="2">Quảng cáo</div>
+  </section>
+
+  <!-- ===== BẢN MỆNH ===== -->
+  <section class="view" id="v-ban-menh">
+    <div class="card">
+      <h2>Bạn mệnh gì?</h2>
+      <label>Ngày sinh dương lịch</label>
+      <input type="date" id="mDob" value="1994-06-15">
+      <button class="btn block" id="btnMenh">Xem bản mệnh</button>
+    </div>
+    <div class="card hidden" id="menhOut"></div>
+    <div class="ad-slot" data-ad="3">Quảng cáo</div>
+  </section>
+
+  <!-- ===== LỊCH ÂM ===== -->
+  <section class="view" id="v-lich-am">
+    <div class="card">
+      <h2>Đổi ngày dương sang âm</h2>
+      <label>Ngày dương lịch</label>
+      <input type="date" id="cDate">
+      <button class="btn block" id="btnConv">Đổi ngày</button>
+      <div id="convOut" style="margin-top:14px"></div>
+    </div>
+    <div class="ad-slot" data-ad="4">Quảng cáo</div>
+  </section>
+
+  <!-- ===== STUDIO (chủ kênh, mở bằng #studio) ===== -->
+  <section class="view" id="v-studio">
+    <div class="card">
+      <h2>🎬 Studio chủ kênh</h2>
+      <p class="muted">Tạo bộ 12 ảnh dọc 9:16 tử vi hôm nay để ghép thành video/slideshow TikTok. Bấm từng ảnh để xem lớn và tải về.</p>
+      <label>Ngày</label><input type="date" id="sDate">
+      <button class="btn block" id="btnStudio">Tạo 12 ảnh</button>
+      <h3>Lời dẫn gợi ý cho video</h3>
+      <p class="muted" id="sScript"></p>
+      <button class="btn ghost" id="btnCopyScript">Sao chép lời dẫn</button>
+    </div>
+    <div class="studio-grid" id="studioGrid"></div>
+  </section>
+
+  <div class="card" id="donateCard" style="text-align:center">
+    <p style="margin:0 0 4px">Thấy hữu ích? Theo dõi để xem tử vi mỗi sáng 👇</p>
+    <a class="btn" id="tiktokLink" href="#" target="_blank" rel="noopener">Theo dõi trên TikTok</a>
+    <a class="btn ghost hidden" id="donateLink" href="#" target="_blank" rel="noopener">☕ Mời một ly cà phê</a>
+  </div>
+
+  <footer>
+    <p>Nội dung mang tính tham khảo, giải trí. Không thay thế lời khuyên chuyên môn.</p>
+    <p id="copy"></p>
+  </footer>
+</div>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <img id="modalImg" alt="Ảnh tử vi">
+    <p class="muted" style="margin:10px 0 0">Trên điện thoại: nhấn giữ ảnh để lưu.</p>
+    <a class="btn" id="modalDl" download="tu-vi.png">⬇ Tải ảnh</a>
+    <button class="btn ghost" id="modalClose">Đóng</button>
+  </div>
+</div>
+
+<script>
+/* ==========================================================
+   CẤU HÌNH — CHỈ CẦN SỬA PHẦN NÀY
+   ========================================================== */
+const CONFIG = {
+  siteName: "Tử Vi Mỗi Ngày",
+  siteUrl: "thangmta111094-pixel.github.io",      // tên miền sau khi đưa lên mạng
+  tiktokHandle: "@Phanthang111094",        // tên kênh TikTok, in lên ảnh
+  tiktokUrl: "https://www.tiktok.com/@Phanthang111094",
+  donateUrl: "",                         // link Momo / ko-fi / ngân hàng (để trống = ẩn)
+  adsenseClient: "",                     // vd "ca-pub-1234567890123456" (để trống = chỉ hiện khung)
+  adsenseSlot: "",                       // mã slot quảng cáo AdSense
+  // Link affiliate (Shopee/Lazada/TikTok Shop) cho vật phẩm hợp từng mệnh. Để trống = ẩn khối đó.
+  affiliate: {
+    "Kim":  {url:"", text:"Vòng tay đá thạch anh trắng, mắt hổ vàng"},
+    "Mộc":  {url:"", text:"Vòng tay đá lục bích, cây phong thủy để bàn"},
+    "Thủy": {url:"", text:"Vòng tay obsidian đen, aquamarine xanh"},
+    "Hỏa":  {url:"", text:"Vòng tay thạch anh tím, hồng, đá ruby"},
+    "Thổ":  {url:"", text:"Vòng tay mắt hổ nâu, thạch anh vàng"}
+  }
+};
+
+/* ==========================================================
+   LỊCH ÂM (thuật toán Hồ Ngọc Đức, múi giờ +7)
+   ========================================================== */
+const TZ = 7, PI = Math.PI, INT = Math.floor;
+function jdFromDate(dd, mm, yy){
+  const a=INT((14-mm)/12), y=yy+4800-a, m=mm+12*a-3;
+  let jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-INT(y/100)+INT(y/400)-32045;
+  if(jd<2299161) jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-32083;
+  return jd;
+}
+function getNewMoonDay(k){
+  const T=k/1236.85,T2=T*T,T3=T2*T,dr=PI/180;
+  let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+  Jd1+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+  const M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
+  const Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+  const F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
+  let C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);
+  C1-=0.4068*Math.sin(Mpr*dr); C1+=0.0161*Math.sin(dr*2*Mpr);
+  C1-=0.0004*Math.sin(dr*3*Mpr);
+  C1+=0.0104*Math.sin(dr*2*F); C1-=0.0051*Math.sin(dr*(M+Mpr));
+  C1-=0.0074*Math.sin(dr*(M-Mpr)); C1+=0.0004*Math.sin(dr*(2*F+M));
+  C1-=0.0004*Math.sin(dr*(2*F-M)); C1-=0.0006*Math.sin(dr*(2*F+Mpr));
+  C1+=0.0010*Math.sin(dr*(2*F-Mpr)); C1+=0.0005*Math.sin(dr*(2*Mpr+M));
+  const deltat = T<-11 ? 0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3
+                       : -0.000278+0.000265*T+0.000262*T2;
+  return INT(Jd1+C1-deltat+0.5+TZ/24);
+}
+function getSunLongitude(jdn){
+  const T=(jdn-2451545.5-TZ/24)/36525,T2=T*T,dr=PI/180;
+  const M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
+  const L0=280.46645+36000.76983*T+0.0003032*T2;
+  let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M);
+  DL+=(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);
+  let L=(L0+DL)*dr; L=L-PI*2*INT(L/(PI*2));
+  return INT(L/PI*6);
+}
+function getLunarMonth11(yy){
+  const off=jdFromDate(31,12,yy)-2415021, k=INT(off/29.530588853);
+  let nm=getNewMoonDay(k);
+  if(getSunLongitude(nm)>=9) nm=getNewMoonDay(k-1);
+  return nm;
+}
+function getLeapMonthOffset(a11){
+  const k=INT((a11-2415021.076998695)/29.530588853+0.5);
+  let last=0,i=1,arc=getSunLongitude(getNewMoonDay(k+i));
+  do{ last=arc; i++; arc=getSunLongitude(getNewMoonDay(k+i)); }while(arc!==last && i<14);
+  return i-1;
+}
+function solar2lunar(dd,mm,yy){
+  const dayNumber=jdFromDate(dd,mm,yy);
+  const k=INT((dayNumber-2415021.076998695)/29.530588853);
+  let monthStart=getNewMoonDay(k+1);
+  if(monthStart>dayNumber) monthStart=getNewMoonDay(k);
+  let a11=getLunarMonth11(yy), b11=a11, lunarYear;
+  if(a11>=monthStart){ lunarYear=yy; a11=getLunarMonth11(yy-1); }
+  else { lunarYear=yy+1; b11=getLunarMonth11(yy+1); }
+  const lunarDay=dayNumber-monthStart+1, diff=INT((monthStart-a11)/29);
+  let leap=0, lunarMonth=diff+11;
+  if(b11-a11>365){
+    const lmd=getLeapMonthOffset(a11);
+    if(diff>=lmd){ lunarMonth=diff+10; if(diff===lmd) leap=1; }
+  }
+  if(lunarMonth>12) lunarMonth-=12;
+  if(lunarMonth>=11 && diff<4) lunarYear-=1;
+  return {day:lunarDay,month:lunarMonth,year:lunarYear,leap,jd:dayNumber};
+}
+
+/* ==========================================================
+   CAN CHI, NGŨ HÀNH, NẠP ÂM
+   ========================================================== */
+const CAN=["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"];
+const CHI=["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
+const CON=["Chuột","Trâu","Hổ","Mèo","Rồng","Rắn","Ngựa","Dê","Khỉ","Gà","Chó","Lợn"];
+const EMO=["🐭","🐮","🐯","🐱","🐲","🐍","🐴","🐐","🐵","🐔","🐶","🐷"];
+const GIO=["23h–1h","1h–3h","3h–5h","5h–7h","7h–9h","9h–11h","11h–13h","13h–15h","15h–17h","17h–19h","19h–21h","21h–23h"];
+const THU=["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"];
+const CHI_HANH=["Thủy","Thổ","Mộc","Mộc","Thổ","Hỏa","Hỏa","Thổ","Kim","Kim","Thổ","Thủy"];
+const NAP_AM=["Hải Trung Kim","Lư Trung Hỏa","Đại Lâm Mộc","Lộ Bàng Thổ","Kiếm Phong Kim","Sơn Đầu Hỏa","Giản Hạ Thủy","Thành Đầu Thổ","Bạch Lạp Kim","Dương Liễu Mộc","Tuyền Trung Thủy","Ốc Thượng Thổ","Tích Lịch Hỏa","Tùng Bách Mộc","Trường Lưu Thủy","Sa Trung Kim","Sơn Hạ Hỏa","Bình Địa Mộc","Bích Thượng Thổ","Kim Bạch Kim","Phú Đăng Hỏa","Thiên Hà Thủy","Đại Trạch Thổ","Thoa Xuyến Kim","Tang Đố Mộc","Đại Khê Thủy","Sa Trung Thổ","Thiên Thượng Hỏa","Thạch Lựu Mộc","Đại Hải Thủy"];
+const NAP_AM_VN=["Vàng trong biển","Lửa trong lò","Gỗ rừng lớn","Đất ven đường","Vàng mũi kiếm","Lửa trên núi","Nước khe suối","Đất trên thành","Vàng chân đèn","Gỗ cây dương liễu","Nước trong giếng","Đất trên mái nhà","Lửa sấm sét","Gỗ tùng bách","Nước chảy dài","Vàng trong cát","Lửa dưới chân núi","Gỗ đồng bằng","Đất trên vách","Vàng thếp","Lửa đèn dầu","Nước trên trời","Đất đầm lớn","Vàng trang sức","Gỗ cây dâu","Nước khe lớn","Đất trong cát","Lửa trên trời","Gỗ cây lựu","Nước biển lớn"];
+const HANH=["Kim","Thủy","Mộc","Hỏa","Thổ"];           // vòng tương sinh
+const SINH = h => HANH[(HANH.indexOf(h)+1)%5];        // h sinh ra ...
+const DUOC_SINH = h => HANH[(HANH.indexOf(h)+4)%5];   // ... sinh ra h
+const KHAC = h => HANH[(HANH.indexOf(h)+2)%5];        // h khắc ...
+const BI_KHAC = h => HANH[(HANH.indexOf(h)+3)%5];     // ... khắc h
+const MAU={"Kim":"Trắng, bạc, xám, ánh kim","Mộc":"Xanh lá, xanh lục","Thủy":"Đen, xanh dương, xanh nước biển","Hỏa":"Đỏ, hồng, cam, tím","Thổ":"Vàng đất, nâu, be"};
+const MAU1={"Kim":"Trắng bạc","Mộc":"Xanh lá","Thủy":"Xanh dương","Hỏa":"Đỏ","Thổ":"Vàng"};
+const HUONG=["Bắc","Đông Bắc","Đông","Đông Nam","Nam","Tây Nam","Tây","Tây Bắc"];
+
+const canChiNam = y => CAN[(y+6)%10]+" "+CHI[(y+8)%12];
+const chiNam = y => (y+8)%12;
+const canNam = y => (y+6)%10;
+const canChiThang = (m,y) => CAN[(y*12+m+3)%10]+" "+CHI[(m+1)%12];
+const canChiNgay = jd => CAN[(jd+9)%10]+" "+CHI[(jd+1)%12];
+const chiNgay = jd => (jd+1)%12;
+const napAm = y => { const i=INT((((y-4)%60)+60)%60/2); return {ten:NAP_AM[i], vn:NAP_AM_VN[i], hanh:NAP_AM[i].split(" ").pop()}; };
+function gioHoangDao(jd){
+  const T=["110100101100","001101001011","110011010010","101100110100","001011001101","010010110011"][chiNgay(jd)%6];
+  const out=[]; for(let i=0;i<12;i++) if(T[i]==="1") out.push(CHI[i]+" ("+GIO[i]+")");
+  return out;
+}
+// quan hệ địa chi
+function chiRel(a,b){
+  if(a===b) return {k:"same",t:"Đồng chi",s:0};
+  if(a%4===b%4) return {k:"tamhop",t:"Tam hợp",s:2};
+  if((a+b)%12===1) return {k:"luchop",t:"Lục hợp",s:2};
+  if(Math.abs(a-b)===6) return {k:"xung",t:"Lục xung",s:-2};
+  if((a+b)%12===7) return {k:"hai",t:"Lục hại",s:-1};
+  return {k:"binh",t:"Bình thường",s:0};
+}
+
+/* ==========================================================
+   TẠO NỘI DUNG HẰNG NGÀY (xác định theo ngày → ai xem cũng thấy giống nhau)
+   ========================================================== */
+function hash(str){ let h=1779033703^str.length; for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19;} h=Math.imul(h^h>>>16,2246822507); h=Math.imul(h^h>>>13,3266489909); return (h^h>>>16)>>>0; }
+const pick=(arr,seed)=>arr[seed%arr.length];
+const TXT={
+  work:{hi:["Công việc hanh thông, ý tưởng mới dễ được cấp trên ghi nhận.","Thời điểm tốt để chốt việc còn dang dở, đề xuất táo bạo dễ thành.","Có quý nhân giúp đỡ, phối hợp nhóm suôn sẻ hơn mọi ngày."],
+        mid:["Công việc ổn định, nên làm chắc từng bước thay vì nóng vội.","Không có biến động lớn, tập trung hoàn thành việc đúng hạn là đủ.","Nên lắng nghe góp ý của đồng nghiệp, tránh làm việc một mình."],
+        lo:["Dễ có hiểu lầm trong giao tiếp, nên xác nhận lại bằng văn bản.","Tránh ký kết quan trọng hôm nay, kiểm tra kỹ giấy tờ.","Áp lực tăng, nên ưu tiên việc gấp và nghỉ ngơi đúng giờ."]},
+  love:{hi:["Tình cảm ấm áp, người độc thân dễ gặp người hợp ý.","Một lời hỏi han nhỏ hôm nay làm mối quan hệ gắn bó hơn.","Cặp đôi có cơ hội cùng lên kế hoạch cho tương lai."],
+        mid:["Tình cảm bình lặng, dành chút thời gian trò chuyện sẽ tốt hơn.","Nên chủ động nhắn tin thay vì chờ đợi đối phương.","Đừng so sánh, mỗi mối quan hệ có nhịp riêng."],
+        lo:["Dễ nóng nảy vì chuyện nhỏ, hãy nói chậm lại một nhịp.","Tránh nhắc chuyện cũ, dễ gây tranh cãi không đáng.","Cần không gian riêng, đừng ép mình hay ép người."]},
+  money:{hi:["Tài lộc khởi sắc, có thể có khoản thu ngoài dự kiến.","Cơ hội kiếm thêm xuất hiện, nhanh tay nhưng vẫn cân nhắc.","Chi tiêu hợp lý, tích lũy hôm nay mang lại lợi ích lâu dài."],
+         mid:["Tài chính ổn, nên ghi chép chi tiêu để kiểm soát tốt hơn.","Thu chi cân bằng, chưa nên đầu tư mạo hiểm.","Mua sắm vừa đủ, tránh chạy theo khuyến mãi."],
+         lo:["Dễ hao tài vì mua sắm bốc đồng, cân nhắc trước khi xuống tiền.","Không nên cho vay mượn lớn trong hôm nay.","Cẩn thận với lời mời đầu tư “lãi cao, nhanh giàu”."]},
+  health:{hi:["Tinh thần sảng khoái, năng lượng dồi dào cả ngày.","Thời điểm tốt để bắt đầu thói quen vận động mới.","Giấc ngủ sâu, cơ thể phục hồi tốt."],
+          mid:["Sức khỏe ổn, nhớ uống đủ nước và đứng dậy vận động.","Nên ăn uống đúng bữa, hạn chế đồ chiên rán.","Dành 10 phút đi bộ ngoài trời để đầu óc thư thái."],
+          lo:["Dễ mệt mỏi, đừng thức khuya và hạn chế cà phê.","Chú ý giữ ấm, tránh dầm mưa hay ngồi điều hòa quá lâu.","Căng thẳng tích tụ, hãy cho mình một khoảng nghỉ ngắn."]}
+};
+const ADVICE=["Sáng nay bắt đầu bằng một việc nhỏ hoàn thành trọn vẹn.","Nói lời cảm ơn với một người đã giúp bạn gần đây.","Dọn gọn bàn làm việc để đón năng lượng mới.","Đừng hứa điều mình chưa chắc làm được.","Chậm lại một chút, quyết định sẽ sáng suốt hơn.","Gọi điện hỏi thăm gia đình, vận may sẽ đến từ sự bình an.","Mặc một món đồ màu may mắn để thêm tự tin.","Giữ lời nói mềm mỏng, việc khó cũng hóa dễ.","Học thêm một điều mới, dù chỉ 15 phút.","Tránh tranh luận trên mạng, giữ năng lượng cho việc chính.","Làm điều tử tế mà không cần ai biết.","Viết ra ba mục tiêu cho tuần này."];
+const CATS=[["work","💼 Công việc"],["love","❤️ Tình cảm"],["money","💰 Tài lộc"],["health","🌿 Sức khỏe"]];
+
+function dailyFor(dateObj, chi){
+  const key=ymd(dateObj), L=solar2lunar(dateObj.getDate(),dateObj.getMonth()+1,dateObj.getFullYear());
+  const rel=chiRel(chi, chiNgay(L.jd));
+  const res={chi, rel, cats:{}};
+  let total=0;
+  for(const [c] of CATS){
+    const h=hash(key+"|"+chi+"|"+c);
+    let st=2+(h%3)+ (rel.s>0?1:rel.s<0?-1:0) + ((h>>>8)%4===0?1:0);
+    st=Math.max(1,Math.min(5,st)); total+=st;
+    const lvl=st>=4?"hi":st===3?"mid":"lo";
+    res.cats[c]={stars:st, text:pick(TXT[c][lvl],h>>>4)};
+  }
+  const h=hash(key+"|"+chi+"|lucky");
+  const hanhTot = (h%2===0) ? DUOC_SINH(CHI_HANH[chi]) : CHI_HANH[chi];
+  res.score=Math.round(total/20*100);
+  res.color=MAU1[hanhTot];
+  res.number=String(h%100).padStart(2,"0");
+  res.huong=pick(HUONG,h>>>5);
+  res.advice=pick(ADVICE,h>>>7);
+  res.hanhTot=hanhTot;
+  return res;
+}
+
+/* ==========================================================
+   GIAO DIỆN
+   ========================================================== */
+const $=id=>document.getElementById(id);
+const ymd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const dmy=d=>String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();
+const parseD=s=>{const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d);};
+const starStr=n=>"★".repeat(n)+"☆".repeat(5-n);
+const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+
+let myChi = Number(store.get("tv_chi") ?? 0);
+const today = new Date();
+
+function renderToday(){
+  const L=solar2lunar(today.getDate(),today.getMonth()+1,today.getFullYear());
+  $("tSolar").textContent=dmy(today);
+  $("tWeekday").textContent=THU[today.getDay()];
+  $("tLunar").textContent=L.day+"/"+L.month+(L.leap?" (nhuận)":"");
+  $("tLunarYear").textContent="Năm "+canChiNam(L.year);
+  $("tCanChi").innerHTML="Ngày <b>"+canChiNgay(L.jd)+"</b> · Tháng <b>"+canChiThang(L.month,L.year)+"</b> · Năm <b>"+canChiNam(L.year)+"</b>";
+  $("tHours").innerHTML=gioHoangDao(L.jd).map(g=>"<span>"+g+"</span>").join("");
+  $("zodiac").innerHTML=CHI.map((c,i)=>`<button data-c="${i}" class="${i===myChi?"on":""}"><span class="e">${EMO[i]}</span>${c}<br><small>${CON[i]}</small></button>`).join("");
+  $("zodiac").querySelectorAll("button").forEach(b=>b.onclick=()=>{myChi=+b.dataset.c; store.set("tv_chi",myChi); renderToday();});
+  renderHoro();
+}
+function renderHoro(){
+  const r=dailyFor(today,myChi);
+  const relTag = r.rel.s>0?`<span class="tag g">${r.rel.t} với ngày</span>`:r.rel.s<0?`<span class="tag b">${r.rel.t} với ngày</span>`:`<span class="tag n">${r.rel.t}</span>`;
+  $("horo").innerHTML=`
+    <h2>${EMO[myChi]} Tuổi ${CHI[myChi]} hôm nay</h2>
+    <p class="muted" style="margin-top:-4px">${relTag} &nbsp; Điểm vận khí: <b style="color:var(--gold2)">${r.score}/100</b></p>
+    ${CATS.map(([c,l])=>`<div class="row"><div><b>${l}</b><p>${r.cats[c].text}</p></div><div class="stars">${starStr(r.cats[c].stars)}</div></div>`).join("")}
+    <div class="lucky">
+      <div><span>Màu may mắn</span><b>${r.color}</b></div>
+      <div><span>Số may mắn</span><b>${r.number}</b></div>
+      <div><span>Hướng tốt</span><b>${r.huong}</b></div>
+    </div>
+    <p style="margin:14px 0 0">💡 <i>${r.advice}</i></p>
+    <button class="btn block" id="btnShare">📸 Tạo ảnh chia sẻ (9:16)</button>`;
+  $("btnShare").onclick=()=>openImg(drawCard(today,myChi),`tu-vi-${CHI[myChi]}-${ymd(today)}.png`);
+  renderAff(r.hanhTot);
+}
+function renderAff(hanh){
+  const a=CONFIG.affiliate[hanh];
+  if(!a||!a.url){$("affCard").classList.add("hidden");return;}
+  $("affCard").classList.remove("hidden");
+  $("affCard").innerHTML=`<div class="aff"><div class="ico">🪬</div><div><b>Vật phẩm hợp hành ${hanh}</b><p class="muted" style="margin:2px 0 0">${a.text}</p></div></div><a class="btn block" href="${a.url}" target="_blank" rel="noopener sponsored">Xem vật phẩm</a>`;
+}
+
+/* --- Hợp tuổi --- */
+function personFrom(s){
+  const d=parseD(s), L=solar2lunar(d.getDate(),d.getMonth()+1,d.getFullYear());
+  return {y:L.year, can:canNam(L.year), chi:chiNam(L.year), na:napAm(L.year), L};
+}
+function match(){
+  if(!$("pA").value||!$("pB").value) return;
+  const A=personFrom($("pA").value), B=personFrom($("pB").value), type=$("pType").value;
+  const lines=[]; let score=15;
+  // 1. Ngũ hành mệnh
+  const ha=A.na.hanh, hb=B.na.hanh;
+  if(SINH(ha)===hb||SINH(hb)===ha){score+=30;lines.push(["g","Mệnh tương sinh",`${ha} và ${hb} sinh nhau, hai người bổ trợ cho nhau.`]);}
+  else if(ha===hb){score+=20;lines.push(["n","Mệnh bình hòa",`Cùng hành ${ha}, dễ hiểu nhau nhưng cần tránh cùng cứng đầu.`]);}
+  else {score+=5;lines.push(["b","Mệnh tương khắc",`${KHAC(ha)===hb?ha+" khắc "+hb:hb+" khắc "+ha}, cần nhường nhịn và bổ sung hành trung gian.`]);}
+  // 2. Thiên can
+  const dc=Math.abs(A.can-B.can);
+  if(dc===5){score+=20;lines.push(["g","Thiên can hợp",`${CAN[A.can]} – ${CAN[B.can]} là cặp can hợp.`]);}
+  else if(dc===6){score+=5;lines.push(["b","Thiên can xung",`${CAN[A.can]} – ${CAN[B.can]} xung nhau, dễ khác quan điểm.`]);}
+  else {score+=12;lines.push(["n","Thiên can bình",`${CAN[A.can]} – ${CAN[B.can]} không xung không hợp.`]);}
+  // 3. Địa chi
+  const r=chiRel(A.chi,B.chi);
+  const chiPts={tamhop:35,luchop:30,same:20,binh:18,hai:5,xung:0}[r.k];
+  score+=chiPts;
+  const chiTxt={tamhop:"Hai con giáp thuộc cùng nhóm tam hợp, rất hợp tính.",luchop:"Lục hợp: gắn bó, hỗ trợ nhau bền lâu.",same:"Cùng con giáp, có điểm chung nhưng dễ “cạnh tranh”.",binh:"Không xung không hợp, tùy vào cách cư xử.",hai:"Lục hại: dễ hiểu lầm, cần giao tiếp thẳng thắn.",xung:"Lục xung: tính cách trái ngược, cần nhiều nhẫn nại."}[r.k];
+  lines.push([r.s>0?"g":r.s<0?"b":"n","Địa chi: "+r.t,`${CHI[A.chi]} – ${CHI[B.chi]}. ${chiTxt}`]);
+  score=Math.min(100,score);
+  const ctx={love:["tình duyên","Đôi này"],work:["làm ăn","Hai người hợp tác"],friend:["bạn bè","Tình bạn này"]}[type];
+  const verdict = score>=80?"Rất hợp 💖":score>=65?"Khá hợp 👍":score>=50?"Trung bình – cần vun đắp":"Ít hợp – cần nhiều thấu hiểu";
+  $("matchOut").classList.remove("hidden");
+  $("matchOut").innerHTML=`
+    <h2>Kết quả ${ctx[0]}</h2>
+    <div class="grid2">
+      <div><b>${EMO[A.chi]} ${canChiNam(A.y)}</b><p class="muted" style="margin:2px 0 0">Mệnh ${A.na.ten} (${A.na.hanh})</p></div>
+      <div><b>${EMO[B.chi]} ${canChiNam(B.y)}</b><p class="muted" style="margin:2px 0 0">Mệnh ${B.na.ten} (${B.na.hanh})</p></div>
+    </div>
+    <div class="score">${score}</div><p class="verdict">${verdict}</p>
+    ${lines.map(l=>`<div class="row"><div><span class="tag ${l[0]}">${l[1]}</span><p>${l[2]}</p></div></div>`).join("")}
+    <p class="muted">${ctx[1]} nên dùng màu thuộc hành <b>${ha===hb?DUOC_SINH(ha):(SINH(ha)===hb?hb:(SINH(hb)===ha?ha:SINH(KHAC(ha)===hb?ha:hb)))}</b> trong nhà/trang phục chung để điều hòa.</p>
+    <button class="btn block" id="btnShareM">📸 Tạo ảnh kết quả</button>`;
+  $("btnShareM").onclick=()=>openImg(drawMatch(A,B,score,verdict,ctx[0]),"hop-tuoi.png");
+}
+
+/* --- Bản mệnh --- */
+function menh(){
+  if(!$("mDob").value) return;
+  const P=personFrom($("mDob").value), h=P.na.hanh;
+  myChi=P.chi; store.set("tv_chi",myChi);
+  $("menhOut").classList.remove("hidden");
+  $("menhOut").innerHTML=`
+    <h2>${EMO[P.chi]} Tuổi ${canChiNam(P.y)}</h2>
+    <p class="muted" style="margin-top:-4px">Ngày sinh âm lịch: ${P.L.day}/${P.L.month}${P.L.leap?" nhuận":""}/${P.L.year} · Con giáp: ${CHI[P.chi]} (${CON[P.chi]})</p>
+    <div class="row"><div><b>Mệnh (nạp âm)</b><p>${P.na.ten} – “${P.na.vn}”</p></div><div class="tag g">${h}</div></div>
+    <div class="row"><div><b>Màu bản mệnh</b><p>${MAU[h]}</p></div></div>
+    <div class="row"><div><b>Màu tương sinh (rất tốt)</b><p>${MAU[DUOC_SINH(h)]} – hành ${DUOC_SINH(h)} sinh ${h}</p></div></div>
+    <div class="row"><div><b>Màu nên hạn chế</b><p>${MAU[BI_KHAC(h)]} – hành ${BI_KHAC(h)} khắc ${h}</p></div></div>
+    <div class="row"><div><b>Tuổi tam hợp</b><p>${[0,4,8].map(o=>(P.chi%4)+o).filter(x=>x!==P.chi).map(x=>CHI[x]).join(", ")}</p></div></div>
+    <div class="row"><div><b>Tuổi lục hợp</b><p>${CHI[(13-P.chi)%12]}</p></div></div>
+    <div class="row"><div><b>Tuổi xung</b><p>${CHI[(P.chi+6)%12]}</p></div></div>
+    <a class="btn block" href="#hom-nay">Xem tử vi hôm nay của tuổi ${CHI[P.chi]} →</a>`;
+  renderAff(h);
+}
+
+/* --- Đổi lịch --- */
+function conv(){
+  if(!$("cDate").value) return;
+  const d=parseD($("cDate").value), L=solar2lunar(d.getDate(),d.getMonth()+1,d.getFullYear());
+  $("convOut").innerHTML=`
+    <div class="today-head">
+      <div><span>Dương lịch</span><b>${dmy(d)}</b><span>${THU[d.getDay()]}</span></div>
+      <div><span>Âm lịch</span><b>${L.day}/${L.month}${L.leap?" nhuận":""}/${L.year}</b><span>Năm ${canChiNam(L.year)}</span></div>
+    </div>
+    <p class="muted">Ngày <b>${canChiNgay(L.jd)}</b> · Tháng <b>${canChiThang(L.month,L.year)}</b></p>
+    <p class="muted" style="margin-bottom:0">Giờ hoàng đạo: ${gioHoangDao(L.jd).join(" · ")}</p>`;
+}
+
+/* ==========================================================
+   ẢNH 9:16 (1080×1920) CHO TIKTOK
+   ========================================================== */
+function bgCanvas(){
+  const c=document.createElement("canvas"); c.width=1080; c.height=1920;
+  const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,0,1920); g.addColorStop(0,"#3b2a6b"); g.addColorStop(.55,"#1e1636"); g.addColorStop(1,"#120c22");
+  x.fillStyle=g; x.fillRect(0,0,1080,1920);
+  // sao
+  for(let i=0;i<90;i++){const s=hash("s"+i); x.fillStyle=`rgba(246,222,160,${(s%60)/100+.1})`; x.beginPath(); x.arc(s%1080,(s>>>10)%1920,(s%3)+1,0,7); x.fill();}
+  x.strokeStyle="rgba(232,194,106,.5)"; x.lineWidth=4; x.strokeRect(40,40,1000,1840);
+  return [c,x];
+}
+function wrap(x,text,cx,y,maxW,lh){
+  const words=text.split(" "); let line="";
+  for(const w of words){ const t=line?line+" "+w:w; if(x.measureText(t).width>maxW&&line){x.fillText(line,cx,y); line=w; y+=lh;} else line=t; }
+  if(line){x.fillText(line,cx,y); y+=lh;} return y;
+}
+function footer(x){
+  x.textAlign="center"; x.fillStyle="#e8c26a"; x.font="600 44px 'Be Vietnam Pro',sans-serif";
+  x.fillText(CONFIG.tiktokHandle,540,1780);
+  x.fillStyle="#a99cc9"; x.font="34px 'Be Vietnam Pro',sans-serif";
+  x.fillText("Xem tuổi bạn tại: "+CONFIG.siteUrl,540,1835);
+}
+function drawCard(dateObj,chi){
+  const r=dailyFor(dateObj,chi), L=solar2lunar(dateObj.getDate(),dateObj.getMonth()+1,dateObj.getFullYear());
+  const [c,x]=bgCanvas(); x.textAlign="center";
+  x.fillStyle="#a99cc9"; x.font="500 40px 'Be Vietnam Pro',sans-serif";
+  x.fillText(THU[dateObj.getDay()]+", "+dmy(dateObj)+"  ·  Âm "+L.day+"/"+L.month,540,150);
+  x.font="170px serif"; x.fillText(EMO[chi],540,370);
+  x.fillStyle="#f6dea0"; x.font="700 110px 'Noto Serif',serif"; x.fillText("Tuổi "+CHI[chi],540,510);
+  x.fillStyle="#efe9ff"; x.font="500 46px 'Be Vietnam Pro',sans-serif"; x.fillText("Vận khí hôm nay: "+r.score+"/100",540,585);
+  let y=690;
+  for(const [k,l] of CATS){
+    x.textAlign="left"; x.fillStyle="#efe9ff"; x.font="600 46px 'Be Vietnam Pro',sans-serif"; x.fillText(l.replace(/^\S+\s/,""),110,y);
+    x.textAlign="right"; x.fillStyle="#e8c26a"; x.font="50px sans-serif"; x.fillText(starStr(r.cats[k].stars),970,y);
+    x.textAlign="left"; x.fillStyle="#c9bde6"; x.font="38px 'Be Vietnam Pro',sans-serif";
+    y=wrap(x,r.cats[k].text,110,y+56,860,48)+26;
+  }
+  x.textAlign="center"; x.fillStyle="rgba(255,255,255,.06)"; x.fillRect(90,y-10,900,170);
+  x.fillStyle="#a99cc9"; x.font="34px 'Be Vietnam Pro',sans-serif";
+  x.fillText("Màu may mắn",240,y+50); x.fillText("Số may mắn",540,y+50); x.fillText("Hướng tốt",840,y+50);
+  x.fillStyle="#f6dea0"; x.font="700 46px 'Be Vietnam Pro',sans-serif";
+  x.fillText(r.color,240,y+115); x.fillText(r.number,540,y+115); x.fillText(r.huong,840,y+115);
+  x.fillStyle="#efe9ff"; x.font="italic 40px 'Be Vietnam Pro',sans-serif";
+  if(y+230<1720) wrap(x,"💡 "+r.advice,540,y+230,880,52);
+  footer(x); return c;
+}
+function drawMatch(A,B,score,verdict,ctx){
+  const [c,x]=bgCanvas(); x.textAlign="center";
+  x.fillStyle="#f6dea0"; x.font="700 80px 'Noto Serif',serif"; x.fillText("Xem tuổi "+ctx,540,220);
+  x.font="180px serif"; x.fillText(EMO[A.chi],290,520); x.fillText(EMO[B.chi],790,520);
+  x.fillStyle="#e8c26a"; x.font="700 90px sans-serif"; x.fillText("+",540,490);
+  x.fillStyle="#efe9ff"; x.font="600 50px 'Be Vietnam Pro',sans-serif";
+  x.fillText(canChiNam(A.y),290,640); x.fillText(canChiNam(B.y),790,640);
+  x.fillStyle="#a99cc9"; x.font="36px 'Be Vietnam Pro',sans-serif";
+  x.fillText(A.na.ten,290,700); x.fillText(B.na.ten,790,700);
+  x.fillStyle="#f6dea0"; x.font="700 300px 'Be Vietnam Pro',sans-serif"; x.fillText(score,540,1100);
+  x.fillStyle="#a99cc9"; x.font="50px 'Be Vietnam Pro',sans-serif"; x.fillText("điểm / 100",540,1180);
+  x.fillStyle="#efe9ff"; x.font="700 70px 'Be Vietnam Pro',sans-serif"; x.fillText(verdict.replace(/ – .*/,""),540,1340);
+  x.fillStyle="#c9bde6"; x.font="40px 'Be Vietnam Pro',sans-serif"; x.fillText("Bạn và người ấy được bao nhiêu điểm?",540,1500);
+  footer(x); return c;
+}
+function openImg(canvas,name){
+  const url=canvas.toDataURL("image/png");
+  $("modalImg").src=url; $("modalDl").href=url; $("modalDl").download=name;
+  $("modal").classList.add("on");
+}
+$("modalClose").onclick=()=>$("modal").classList.remove("on");
+$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.remove("on");};
+
+/* --- Studio --- */
+function studio(){
+  const d=$("sDate").value?parseD($("sDate").value):today;
+  const g=$("studioGrid"); g.innerHTML="";
+  const rs=CHI.map((_,i)=>({i,r:dailyFor(d,i)}));
+  rs.forEach(({i})=>{const c=drawCard(d,i), im=new Image(); im.src=c.toDataURL("image/png"); im.onclick=()=>openImg(c,`${String(i+1).padStart(2,"0")}-${CHI[i]}-${ymd(d)}.png`); g.appendChild(im);});
+  const best=[...rs].sort((a,b)=>b.r.score-a.r.score), top=best.slice(0,3).map(o=>CHI[o.i]), low=best.slice(-2).map(o=>CHI[o.i]);
+  $("sScript").textContent=`Tử vi ${THU[d.getDay()].toLowerCase()} ngày ${dmy(d)}! Ba con giáp may mắn nhất hôm nay là ${top.join(", ")}. Tuổi ${low.join(" và ")} nên cẩn trọng hơn một chút. Lướt xem tuổi của bạn, và comment tuổi để mình xem riêng nhé! Muốn xem tuổi hợp với người ấy thì vào link trong bio.`;
+}
+$("btnCopyScript").onclick=async()=>{try{await navigator.clipboard.writeText($("sScript").textContent);$("btnCopyScript").textContent="Đã sao chép ✓";}catch(e){$("btnCopyScript").textContent="Hãy bôi đen để sao chép";}};
+
+/* ==========================================================
+   QUẢNG CÁO + CẤU HÌNH
+   ========================================================== */
+function setupAds(){
+  if(!CONFIG.adsenseClient) return;
+  const s=document.createElement("script"); s.async=true; s.crossOrigin="anonymous";
+  s.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+CONFIG.adsenseClient;
+  document.head.appendChild(s);
+  document.querySelectorAll("[data-ad]").forEach(el=>{
+    el.innerHTML=`<ins class="adsbygoogle" style="display:block;width:100%" data-ad-client="${CONFIG.adsenseClient}" data-ad-slot="${CONFIG.adsenseSlot}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
+    try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+  });
+}
+function setupConfig(){
+  $("siteName").textContent=CONFIG.siteName; document.title=CONFIG.siteName;
+  $("tiktokLink").href=CONFIG.tiktokUrl; $("tiktokLink").textContent="Theo dõi "+CONFIG.tiktokHandle+" trên TikTok";
+  if(CONFIG.donateUrl){$("donateLink").href=CONFIG.donateUrl;$("donateLink").classList.remove("hidden");}
+  $("copy").textContent="© "+today.getFullYear()+" "+CONFIG.siteName;
+}
+
+/* --- Điều hướng theo #hash --- */
+const VIEWS=["hom-nay","hop-tuoi","ban-menh","lich-am","studio"];
+function route(){
+  let v=location.hash.replace("#",""); if(!VIEWS.includes(v)) v="hom-nay";
+  $("modal").classList.remove("on");
+  VIEWS.forEach(n=>$("v-"+n).classList.toggle("on",n===v));
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));
+  if(v==="hom-nay") renderToday();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+$("btnMatch").onclick=match; $("btnMenh").onclick=menh; $("btnConv").onclick=conv; $("btnStudio").onclick=studio;
+$("cDate").value=ymd(today); $("sDate").value=ymd(today);
+setupConfig(); setupAds(); route(); conv();
+</script>
+</body>
+</html>
